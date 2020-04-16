@@ -21,6 +21,19 @@ cap drop geo_level
 assert (ind_level == "A") == (industry == "00")
 cap drop ind_level
 
+
+reshape wide emp payroll, i(geography industry year quarter) j(firmsize)
+
+rename emp0 emp_total
+rename payroll0 payroll_total
+
+rename emp5 emp_gt500
+rename payroll5 payroll_gt500
+
+gen emp_lt500 = emp_total - emp_gt500
+gen payroll_lt500 = payroll_total - payroll_gt500
+
 compress
+
 save "qwi.dta", replace
 export delimited using "qwi.csv", replace
